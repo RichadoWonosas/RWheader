@@ -2,13 +2,12 @@
 
 namespace stdrw
 {
-
-    BigNumber BigNumber::operator*(const BigNumber &another) const
+    BigNumber BigNumber::operator*(const BigNumber& another) const
     {
         class BigNumberTimesStatus
         {
         private:
-            BigNumber temp_[7] = {BigNumber()};
+            BigNumber temp_[7] = { BigNumber() };
             int status_ = STATUS_FIRST;
         public:
             enum
@@ -21,20 +20,20 @@ namespace stdrw
 
             BigNumberTimesStatus() {}
 
-            BigNumber &operator[](int i) { return temp_[(i < 0) ? 0 : (i % 7)]; }
+            BigNumber&operator[](int i) { return temp_[(i < 0) ? 0 : (i % 7)]; }
 
             int Status() { return status_; }
 
-            void Update(const BigNumber &result) { temp_[++status_ + 3] = result; }
+            void Update(const BigNumber& result) { temp_[++status_ + 3] = result; }
 
             void Reset() { status_ = STATUS_FIRST; }
         };
 
         BigNumber a(*this), b(another), result;
-        BigNumberTimesStatus stack[65] = {BigNumberTimesStatus()};
+        BigNumberTimesStatus stack[65] = { BigNumberTimesStatus() };
         i32 stack_top = 0;
 
-        i32 i, length, temp_length[2];
+        i32 i, length;
         bool symbol = symbol_ != another.symbol_;
         u64 temp_num[4];
 
@@ -61,12 +60,15 @@ namespace stdrw
                         stack[stack_top][3] = BigNumber(temp_num[1] * temp_num[3]);
 
                         //Get final result
-                        result = (stack[stack_top][0] << 64) + ((stack[stack_top][1] + stack[stack_top][2]) << 32) +
-                                 stack[stack_top][3];
+                        result = 
+                            (stack[stack_top][0] << 64) + 
+                            ((stack[stack_top][1] + stack[stack_top][2]) << 32) +
+                            stack[stack_top][3];
 
                         if (--stack_top >= 0)
                             stack[stack_top].Update(result);
-                    } else
+                    }
+                    else
                     {
                         //Get length that used for split
                         length = (a.length_ > b.length_) ? a.length_ : b.length_;
@@ -74,24 +76,28 @@ namespace stdrw
 
                         //Give all pointer a proper length
                         stack[stack_top][0].set_length((length < a.length_) ? length : a.length_);
-                        stack[stack_top][1].set_length(
-                                temp_length[0] = (a.length_ - length > 0) ? (a.length_ - length) : 0);
+                        stack[stack_top][1].set_length((a.length_ - length > 0) ? (a.length_ - length) : 0);
                         stack[stack_top][2].set_length((length < b.length_) ? length : b.length_);
-                        stack[stack_top][3].set_length(
-                                temp_length[1] = (b.length_ - length > 0) ? (b.length_ - length) : 0);
+                        stack[stack_top][3].set_length((b.length_ - length > 0) ? (b.length_ - length) : 0);
 
                         //Split the big numbers into smaller parts
                         for (i = 0; i < a.length_; i++)
-                            if (i < stack[stack_top][0].length_)
+                        {
+                            const long len = stack[stack_top][0].length_;
+                            if (i < len)
                                 stack[stack_top][0].data_[i] = a.data_[i];
                             else
-                                stack[stack_top][1].data_[i - temp_length[0]] = a.data_[i];
+                                stack[stack_top][1].data_[i - len] = a.data_[i];
+                        }
 
                         for (i = 0; i < b.length_; i++)
-                            if (i < stack[stack_top][2].length_)
+                        {
+                            const long len = stack[stack_top][2].length_;
+                            if (i < len)
                                 stack[stack_top][2].data_[i] = b.data_[i];
                             else
-                                stack[stack_top][3].data_[i - temp_length[1]] = b.data_[i];
+                                stack[stack_top][3].data_[i - len] = b.data_[i];
+                        }
 
                         //Calculate (t0 * t2)
                         a = stack[stack_top][0];

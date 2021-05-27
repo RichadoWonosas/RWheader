@@ -1,0 +1,8 @@
+/out/
+/.vs
+/.vscode
+/.gradle
+/.idea
+/cmake-build-*
+/CMakeSettings.json
+*.exe
