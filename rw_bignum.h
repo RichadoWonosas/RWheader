@@ -30,7 +30,7 @@ namespace stdrw
         i64 get_tail_zero_length() const;
 
     public:
-        constexpr static const byte Base64[66] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        constexpr static byte Base64[66] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
         static const bool SYMBOL_POSITIVE = false;
         static const bool SYMBOL_NEGATIVE = true;

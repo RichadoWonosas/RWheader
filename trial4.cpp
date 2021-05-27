@@ -1,17 +1,15 @@
 #include "rw_bignum.h"
 #include <iostream>
 #include <iomanip>
-#include <ctime>
 
 int trial4()
 {
-    long i, j;
     stdrw::u64 value[2];
     stdrw::u64 value2[3] = {0xffffffffffffffffull, 0x200000001ull, 0x1ull};
 
-    std::cout << "Please enter values: ";
-    std::cin >> value[0] >> value[1];
-    std::cout << "\n";
+    // std::cout << "Please enter values: ";
+    // std::cin >> value[0] >> value[1];
+    // std::cout << "\n";
 
     stdrw::BigNumber a(value[0]);
     stdrw::BigNumber b(value[1]);
@@ -55,11 +53,11 @@ int trial4()
     //     std::cout << std::endl;
     // }
 
-    for (i = 0; i < 2; i++)
+    for (long i = 0; i < 2; i++)
     {
         std::cout << std::dec << d[i].get_total_bits() << "\n";
         std::cout << (d[i].is_negative() ? "-" : "");
-        for (j = ((d[i].length() - 1) > 64) ? 64 : (d[i].length() - 1); j >= 0; j--)
+        for (long j = ((d[i].length() - 1) > 64) ? 64 : (d[i].length() - 1); j >= 0; j--)
             std::cout << std::hex << std::setw(16) << std::setfill('0') << d[i][j] << " ";
 
         std::cout << "\n\n";

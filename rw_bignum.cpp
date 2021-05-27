@@ -2,59 +2,58 @@
 
 namespace stdrw
 {
-    BigNumber::BigNumber() : length_(1), data_(new u64[1]{0}), symbol_(false) {}
+    BigNumber::BigNumber() : data_(new u64[1]{0}), symbol_(false), length_(1) {}
 
     BigNumber::BigNumber(u64 *data, i32 length, bool symbol) : data_(data),
-                                                               length_((length <= 0) ? 1 : length),
-                                                               symbol_(symbol) {}
+                                                               symbol_(symbol),
+                                                               length_((length <= 0) ? 1 : length) {}
 
-    BigNumber::BigNumber(const BigNumber &another) : length_(another.length_),
-                                                     data_(new u64[another.length_]),
-                                                     symbol_(another.symbol_)
+    BigNumber::BigNumber(const BigNumber &another) : data_(new u64[another.length_]),
+                                                     symbol_(another.symbol_),
+                                                     length_(another.length_)
     {
-        i32 i;
-        for (i = 0; i < length_; i++)
+        for (i32 i = 0; i < length_; i++)
             data_[i] = another.data_[i];
     }
 
-    BigNumber::BigNumber(BigNumber &&another) noexcept: length_(another.length_),
-                                                        data_(another.data_),
-                                                        symbol_(another.symbol_)
+    BigNumber::BigNumber(BigNumber &&another) noexcept: data_(another.data_),
+                                                        symbol_(another.symbol_),
+                                                        length_(another.length_)
     {
         another.data_ = nullptr;
     }
 
-    BigNumber::BigNumber(ibyte value) : length_(1),
-                                        data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
-                                        symbol_(value < 0) {}
+    BigNumber::BigNumber(ibyte value) : data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
+                                        symbol_(value < 0),
+                                        length_(1) {}
 
-    BigNumber::BigNumber(i16 value) : length_(1),
-                                      data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
-                                      symbol_(value < 0) {}
+    BigNumber::BigNumber(i16 value) : data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
+                                      symbol_(value < 0),
+                                      length_(1) {}
 
-    BigNumber::BigNumber(i32 value) : length_(1),
-                                      data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
-                                      symbol_(value < 0) {}
+    BigNumber::BigNumber(i32 value) : data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
+                                      symbol_(value < 0),
+                                      length_(1) {}
 
-    BigNumber::BigNumber(i64 value) : length_(1),
-                                      data_(new u64[1]{static_cast<u64>((value >= 0) ? value : -value)}),
-                                      symbol_(value < 0) {}
+    BigNumber::BigNumber(i64 value) : data_(new u64[1]{ static_cast<u64>((value >= 0) ? value : -value) }),
+                                      symbol_(value < 0),
+                                      length_(1) {}
 
-    BigNumber::BigNumber(byte value, bool symbol) : length_(1),
-                                                    data_(new u64[1]{value}),
-                                                    symbol_(symbol && value != 0) {}
+    BigNumber::BigNumber(byte value, bool symbol) : data_(new u64[1]{ value }),
+                                      symbol_(symbol && value != 0),
+                                      length_(1) {}
 
-    BigNumber::BigNumber(u16 value, bool symbol) : length_(1),
-                                                   data_(new u64[1]{value}),
-                                                   symbol_(symbol && value != 0) {}
+    BigNumber::BigNumber(u16 value, bool symbol) : data_(new u64[1]{ value }),
+                                      symbol_(symbol && value != 0),
+                                      length_(1) {}
 
-    BigNumber::BigNumber(u32 value, bool symbol) : length_(1),
-                                                   data_(new u64[1]{value}),
-                                                   symbol_(symbol && value != 0) {}
+    BigNumber::BigNumber(u32 value, bool symbol) : data_(new u64[1]{ value }),
+                                                   symbol_(symbol && value != 0),
+                                                   length_(1) {}
 
-    BigNumber::BigNumber(u64 value, bool symbol) : length_(1),
-                                                   data_(new u64[1]{value}),
-                                                   symbol_(symbol && value != 0) {}
+    BigNumber::BigNumber(u64 value, bool symbol) : data_(new u64[1]{value}),
+                                                   symbol_(symbol && value != 0),
+                                                   length_(1) {}
 
     BigNumber::~BigNumber()
     {
